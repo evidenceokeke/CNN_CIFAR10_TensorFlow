@@ -57,4 +57,4 @@ Now test the API from Postman on your local machine using the EC2's instance pub
 After you're done with the instance, **remember to delete** it from the EC2 console to avoid incurring charges in the future.
 
 
-   
+  *You're doing amazing, Pookie!*
