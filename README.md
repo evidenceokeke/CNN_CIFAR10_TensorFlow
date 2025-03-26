@@ -9,7 +9,7 @@ In this project, I train a Convolutional Neural Network (CNN) on the CIFAR-10 da
 1. Model 1 (Custom CNN) : I first trained a custom CNN model from scratch, which achieved a test accuracy of 69%. This did not reach the goal. You can however, review the process in the notebook titled "Training a CNN on CIFAR-10 (1)".
 2. Model 2 (Transfer Learning with ResNet50): I then used transfer learning with the pretrained ResNet50 model, achieving a test accuracy of 81%. I used this model to build a Flask API. Check out notebook "Training a CNN on CIFAR-10 (2)" on how it was done.
 
-In main.py I built the Flask API.
+In ```main.py``` I built the Flask API.
 
 **API Usage**
 
