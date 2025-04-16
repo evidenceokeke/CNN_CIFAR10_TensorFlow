@@ -1,60 +1,75 @@
-# CNN on CIFAR-10: Model Training, Flask API Deployment, and EC2 Hosting
+#  Image Classifier API – CIFAR-10 (TensorFlow + Flask + AWS EC2)
 
-In this project, I train a Convolutional Neural Network (CNN) on the CIFAR-10 dataset using TensorFlow. The trained model is then deployed as a Flask API in Docker and hosed on AWS EC2.
+Built a deep learning model to classify CIFAR-10 images using both a custom CNN and transfer learning with ResNet50. Deployed the model as a Flask API, containerized it with Docker, and hosted it on AWS EC2.
 
-**Goal**: Achieve a test accuracy of > 70% on the CIFAR-10 dataset.
+**Objective** : Achieve >70% test accuracy on CIFAR-10 and expose the trained model through a production-ready API.
 
 **Approach**
 
-1. Model 1 (Custom CNN) : I first trained a custom CNN model from scratch, which achieved a test accuracy of 69%. This did not reach the goal. You can however, review the process in the notebook titled "Training a CNN on CIFAR-10 (1)".
-2. Model 2 (Transfer Learning with ResNet50): I then used transfer learning with the pretrained ResNet50 model, achieving a test accuracy of 81%. I used this model to build a Flask API. Check out notebook "Training a CNN on CIFAR-10 (2)" on how it was done.
+*Model 1: Custom CNN*
+* Trained a CNN from scratch using TensorFlow
+* Reached 69% test accuracy
+* See: Training a CNN on CIFAR-10 (1).ipynb
 
-In ```main.py``` I built the Flask API.
+*Model 2: ResNet50 (Transfer Learning)*
+* Used pretrained ResNet50
+* Achieved 81% test accuracy
+* Used this model for final API deployment
+* See: Training a CNN on CIFAR-10 (2).ipynb
 
-**API Usage**
+**Tech Stack**
+* TensorFlow, Keras
+* Flask (API)
+* Docker
+* AWS EC2
+* Postman (for testing)
 
-You can test the API using Postman (or cURL), by:
-* Set the request type to POST.
-* Use the following URL (or the one that comes up when you run main.py): http://127.0.0.1:5000/predict
-* Under the "Body" tab, select "form-data" and upload the image you want to classify.
-* The API will return a dictionary with the predicted class and its associated probability.
+**API Overview**
+* Endpoint: POST /predict
+* Input: Image file (form-data)
+* Output:
+  ```
+   {
+    "prediction": "cat",
+    "probability": 0.88
+  }
+  ```
+  Test using Postman or cURL.
 
-  **Dockerizing the Flask API**
 
-  To deploy your Flask API in Docker, ensure you have the following files in your project directory:
-  * Dockerfile
-  * requirements.txt
-  * .dockerignore
+**Dockerrized Deployment**
 
- Check them out in the repository. Ensure you have Docker installed on your system as well.
+Ensure you have:
+* Dockerfile
+* requirements.txt
+* .dockerignore
 
- *Steps to Dockerize*
- 
- On your terminal run the following:
- 1. Build the Docker image: ```docker build -t flask-api .```
- 2. Run the container: ```docker run -p 5000:5000 flask-api```
- 3. Test the API using Postman (or cURL) as described above.
+Build and run:
+```
+# Build image
+docker build -t flask-api .
 
-If you are unsure of how to install the required python dependencies from ```requirements.txt```, you can use the following command:
-
-```pip install -r requirements.txt```
+# Run container
+docker run -p 5000:5000 flask-api
+```
+Access the API at: http://127.0.0.1:5000/predict
 
 **Deploying on AWS EC2**
+* Launch EC2 Instance - Follow this tutorial -
+* Transfer project files:
+  ```
+   scp -i your-key.pem -r ./project-folder ec2-user@<ec2-ip>:/home/ec2-user/
+  ```
+* On the instance:
+  ```
+  pip install -r requirements.txt
+  python main.py
+  ```
+* Allow external access (Port 5000)
+   * Update EC2 Security Group: Custom TCP → Port 5000 → Source: 0.0.0.0/0
+   * Also update Windows Firewall (if applicable)
+ * Test API remotely: http://<your-ec2-public-ip>:5000/predict
 
-1. Create an EC2 Instance. I followed this Youtube tutorial: https://youtu.be/YH_DVenJHII?si=P4ayk54JiNW3rsn8
-2. Once the Instance is running and connected, copy the project from local machine to the Instance.
-3. Open command prompt and navigate to the project directory.
-4. Install all dependencies using: ```pip install -r requirements.txt```
-5. Start the Flask app by running ```python main.py```
-
-To allow external access to your Flask app on port 5000, you may need to confirgure the EC2 security group:
-* In the EC2 Management Console, go to Security Groups.
-* Click on "Edit the Inbound Rules", and add a rule for Custom TCP with port 5000 and source 0.0.0.0/0 (to allow all IP addresses).
-* On the EC2 Instance, open Windows Firewall settings and add an inbound rule to allow connections on port 5000.
-
-Now test the API from Postman on your local machine using the EC2's instance public IP address: ```http://<your-ec2-public-ip>:5000/predict```
-
-After you're done with the instance, **remember to delete** it from the EC2 console to avoid incurring charges in the future.
-
-
-  *You're doing amazing, Pookie!*
+**Cleanup**
+Terminate your EC2 instance to avoid unwanted AWS charges.
+ 
