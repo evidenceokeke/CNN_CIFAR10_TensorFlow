@@ -55,7 +55,7 @@ docker run -p 5000:5000 flask-api
 Access the API at: http://127.0.0.1:5000/predict
 
 **Deploying on AWS EC2**
-* Launch EC2 Instance - Follow this tutorial -
+* Launch EC2 Instance - Follow this tutorial - https://youtu.be/YH_DVenJHII?si=P4ayk54JiNW3rsn8
 * Transfer project files:
   ```
    scp -i your-key.pem -r ./project-folder ec2-user@<ec2-ip>:/home/ec2-user/
@@ -72,4 +72,9 @@ Access the API at: http://127.0.0.1:5000/predict
 
 **Cleanup**
 Terminate your EC2 instance to avoid unwanted AWS charges.
+
+**Resources**
+https://www.kaggle.com/c/cifar-10/
+
+
  
